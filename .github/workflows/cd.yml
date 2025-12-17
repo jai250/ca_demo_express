@@ -25,6 +25,6 @@ jobs:
         ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
         ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "rm -rf /home/ubuntu/app"
         scp -r . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/app
-        ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/ubuntu/app && python3 install_nginx.py"
-        ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/ubuntu/app && python3 setup_nginx.py ${{ env.DOMAIN_NAME }}"
+        ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/ubuntu/app && sudo python3 install_nginx.py"
+        ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/ubuntu/app && sudo python3 setup_nginx.py ${{ env.DOMAIN_NAME }}"
         ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/ubuntu/app && npm install && nohup npm start &"
