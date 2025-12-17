@@ -29,6 +29,6 @@ jobs:
           cd /home/ubuntu/app
           python3 install_docker.py
           python3 install_nginx.py
-          python3 setup_nginx.py ${{ secrets.DOMAIN_NAME }}
-          docker-compose up -d
-          docker-compose ps
+          python3 setup_nginx.py ${{ env.DOMAIN_NAME }}
+          sudo docker-compose up -d
+          sudo docker-compose ps
