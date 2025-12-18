@@ -5,6 +5,8 @@ on: workflow_dispatch
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
 
     steps:
     - name: Checkout code
@@ -17,7 +19,7 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         source: "."
-        target: "/home/ubuntu/app"
+        target: "/home/${{ secrets.EC2_USER }}/app"
 
     - name: Install Docker and Nginx, Run Containers
       uses: appleboy/ssh-action@v1.0.0
@@ -26,9 +28,18 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          cd /home/ubuntu/app
-          python3 utils/install_docker.py
-          python3 utils/install_nginx.py
-          python3 utils/setup_nginx.py ${{ env.DOMAIN_NAME }}
-          sudo docker-compose up -d
-          sudo docker-compose ps
+          cd /home/${{ secrets.EC2_USER }}/app
+          
+          # Install Docker using shell script
+          chmod +x utils/install_docker.sh
+          bash utils/install_docker.sh
+          
+          # Install Nginx using shell script
+          chmod +x utils/install_nginx.sh
+          bash utils/install_nginx.sh ${{ secrets.DOMAIN_NAME }}
+          
+          # Run containers using docker compose (modern syntax)
+          sudo docker compose down || true
+          sudo docker compose build --no-cache
+          sudo docker compose up -d
+          sudo docker compose ps
