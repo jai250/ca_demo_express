@@ -13,6 +13,9 @@ RUN npm ci --only=production
 # Production stage
 FROM node:18-alpine AS production
 
+# Install curl for health checks
+RUN apk add --no-cache curl
+
 # Set the working directory
 WORKDIR /app
 

@@ -27,8 +27,8 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd /home/ubuntu/app
-          python3 install_docker.py
-          python3 install_nginx.py
-          python3 setup_nginx.py ${{ env.DOMAIN_NAME }}
+          python3 utils/install_docker.py
+          python3 utils/install_nginx.py
+          python3 utils/setup_nginx.py ${{ env.DOMAIN_NAME }}
           sudo docker-compose up -d
           sudo docker-compose ps
