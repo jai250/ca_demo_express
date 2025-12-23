@@ -33,6 +33,6 @@ server {
 }
 EOF
 
-sudo ln -sf $CONFIG_FILE /etc/nginx/sites-enabled/$(basename $CONFIG_FILE)
+sudo ln -sf $CONFIG_FILE /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
